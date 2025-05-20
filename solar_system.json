@@ -36,7 +36,7 @@
           "name": "Moon",
           "radius": 0.2,
           "distance": 1.2,
-          "texture": "./assets/images/lune.jpeg",
+          "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.03,
           "selfRotationSpeed": 0.01
         }
@@ -48,8 +48,25 @@
       "distance": 10,
       "texture": "./assets/images/mars.jpg",
       "orbitSpeed": 0.015,
-      "selfRotationSpeed": 0.018
-
+      "selfRotationSpeed": 0.018,
+      "moons": [
+        {
+          "name": "Phobos",
+          "radius": 0.05,
+          "distance": 0.8,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.04,
+          "selfRotationSpeed": 0.01
+        },
+        {
+          "name": "Deimos",
+          "radius": 0.03,
+          "distance": 1.0,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.035,
+          "selfRotationSpeed": 0.01
+        }
+      ]
     },
     {
       "name": "Jupiter",
@@ -57,7 +74,41 @@
       "distance": 14,
       "texture": "./assets/images/jupiter.jpg",
       "orbitSpeed": 0.008,
-      "selfRotationSpeed": 0.03
+      "selfRotationSpeed": 0.03,
+      "moons": [
+        {
+          "name": "Io",
+          "radius": 0.2,
+          "distance": 2.0,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.02,
+          "selfRotationSpeed": 0.01
+        },
+        {
+          "name": "Europa",
+          "radius": 0.18,
+          "distance": 2.5,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.018,
+          "selfRotationSpeed": 0.01
+        },
+        {
+          "name": "Ganymede",
+          "radius": 0.25,
+          "distance": 3.2,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.015,
+          "selfRotationSpeed": 0.01
+        },
+        {
+          "name": "Callisto",
+          "radius": 0.24,
+          "distance": 4.0,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.012,
+          "selfRotationSpeed": 0.01
+        }
+      ]
     },
     {
       "name": "Saturn",
@@ -65,7 +116,25 @@
       "distance": 18,
       "texture": "./assets/images/saturne.jpg",
       "orbitSpeed": 0.006,
-      "selfRotationSpeed": 0.025
+      "selfRotationSpeed": 0.025,
+      "moons": [
+        {
+          "name": "Titan",
+          "radius": 0.22,
+          "distance": 2.8,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.014,
+          "selfRotationSpeed": 0.01
+        },
+        {
+          "name": "Enceladus",
+          "radius": 0.1,
+          "distance": 2.0,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.018,
+          "selfRotationSpeed": 0.01
+        }
+      ]
     },
     {
       "name": "Uranus",
@@ -73,7 +142,25 @@
       "distance": 22,
       "texture": "./assets/images/uranus.jpg",
       "orbitSpeed": 0.004,
-      "selfRotationSpeed": 0.02
+      "selfRotationSpeed": 0.02,
+      "moons": [
+        {
+          "name": "Titania",
+          "radius": 0.15,
+          "distance": 2.5,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.01,
+          "selfRotationSpeed": 0.01
+        },
+        {
+          "name": "Oberon",
+          "radius": 0.14,
+          "distance": 3.0,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.009,
+          "selfRotationSpeed": 0.01
+        }
+      ]
     },
     {
       "name": "Neptune",
@@ -81,7 +168,17 @@
       "distance": 26,
       "texture": "./assets/images/neptune.jpg",
       "orbitSpeed": 0.003,
-      "selfRotationSpeed": 0.018
+      "selfRotationSpeed": 0.018,
+      "moons": [
+        {
+          "name": "Triton",
+          "radius": 0.18,
+          "distance": 2.6,
+          "texture": "./assets/images/lune.jpg",
+          "orbitSpeed": 0.008,
+          "selfRotationSpeed": 0.01
+        }
+      ]
     }
   ]
 }

@@ -6,7 +6,7 @@ import {
     FrontSide
 } from 'three';
 
-export default class Sphere extends Mesh {
+export default class Planet extends Mesh {
     constructor(size, texturePath, side = FrontSide) {
         const textureLoader = new TextureLoader();
         const geometry = new SphereGeometry(size, 32, 32);

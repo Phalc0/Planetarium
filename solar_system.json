@@ -1,0 +1,87 @@
+{
+  "sun": {
+    "name": "Sun",
+    "radius": 2,
+    "texture": "./assets/images/soleil.jpg",
+    "rotationSpeed": 0.002,
+    "emissive": true
+  },
+  "planets": [
+    {
+      "name": "Mercury",
+      "radius": 0.3,
+      "distance": 4,
+      "texture": "./assets/images/mercure.jpg",
+      "orbitSpeed": 0.035,
+      "selfRotationSpeed": 0.005
+    },
+    {
+      "name": "Venus",
+      "radius": 0.6,
+      "distance": 6,
+      "texture": "./assets/images/venus.jpg",
+      "orbitSpeed": 0.028,
+      "selfRotationSpeed": 0.003
+    },
+    {
+      "name": "Earth",
+      "radius": 0.7,
+      "distance": 8,
+      "texture": "./assets/images/terre.jpg",
+      "orbitSpeed": 0.02,
+      "selfRotationSpeed": 0.02,
+      "inclination": 0.21,
+      "moons": [
+        {
+          "name": "Moon",
+          "radius": 0.2,
+          "distance": 1.2,
+          "texture": "./assets/images/lune.jpeg",
+          "orbitSpeed": 0.03,
+          "selfRotationSpeed": 0.01
+        }
+      ]
+    },
+    {
+      "name": "Mars",
+      "radius": 0.4,
+      "distance": 10,
+      "texture": "./assets/images/mars.jpg",
+      "orbitSpeed": 0.015,
+      "selfRotationSpeed": 0.018
+
+    },
+    {
+      "name": "Jupiter",
+      "radius": 1.4,
+      "distance": 14,
+      "texture": "./assets/images/jupiter.jpg",
+      "orbitSpeed": 0.008,
+      "selfRotationSpeed": 0.03
+    },
+    {
+      "name": "Saturn",
+      "radius": 1.2,
+      "distance": 18,
+      "texture": "./assets/images/saturne.jpg",
+      "orbitSpeed": 0.006,
+      "selfRotationSpeed": 0.025
+    },
+    {
+      "name": "Uranus",
+      "radius": 1.0,
+      "distance": 22,
+      "texture": "./assets/images/uranus.jpg",
+      "orbitSpeed": 0.004,
+      "selfRotationSpeed": 0.02
+    },
+    {
+      "name": "Neptune",
+      "radius": 1.0,
+      "distance": 26,
+      "texture": "./assets/images/neptune.jpg",
+      "orbitSpeed": 0.003,
+      "selfRotationSpeed": 0.018
+    }
+  ]
+}

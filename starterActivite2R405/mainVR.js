@@ -85,5 +85,6 @@ renderer.setAnimationLoop( function () {
     renderer.render( scene, camera );
   } );
 
-document.body.appendChild( VRButton.createButton( renderer ) );
-
+  document.body.appendChild(renderer.domElement);
+  document.body.appendChild(VRButton.createButton(renderer));
+  

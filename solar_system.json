@@ -30,7 +30,7 @@
       "texture": "./assets/images/terre.jpg",
       "orbitSpeed": 0.02,
       "selfRotationSpeed": 0.02,
-      "inclination": 0.21,
+      "inclination": 0.07,
       "moons": [
         {
           "name": "Moon",

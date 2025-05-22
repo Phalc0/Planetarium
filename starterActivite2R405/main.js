@@ -1,7 +1,8 @@
 import init from "./systems/init";
 import Sphere from "./components/PlanetSphere";
 import Sun from "./components/SunSphere";
-// import OrbitLine from "./components/Trajectoire";
+import OrbitLine from "./components/Trajectoire";
+import { createTextSprite } from "./components/Sprite";
 import {
   Object3D,
   PointLight,
@@ -15,7 +16,6 @@ import Vide from "./assets/images/GalaxyDark.jpg";
 import solarSystem from "../solar_system.json";
 
 const [camera, renderer, scene, controls] = init();
-
 
 const raycaster = new Raycaster();
 const mouse = new Vector2();
@@ -47,9 +47,10 @@ scene.add(sun);
 const orbitCenters = [];
 
 solarSystem.planets.forEach((planetData) => {
-    // // Ligne de trajectoire
-    // const orbitLine = new OrbitLine(planetData.distance, planetData.inclination);
-    // scene.add(orbitLine);
+  // Ligne de trajectoire
+  const orbitLine = new OrbitLine(planetData.distance, planetData.inclination);
+  scene.add(orbitLine);
+
   const planetOrbit = new Object3D();
   sun.add(planetOrbit);
   orbitCenters.push({ orbit: planetOrbit, speed: planetData.orbitSpeed });
@@ -58,6 +59,16 @@ solarSystem.planets.forEach((planetData) => {
   planet.position.x = planetData.distance;
   planet.rotationSpeed = planetData.selfRotationSpeed || 0.01;
   planet.name = planetData.name || "Unknown";
+
+  //Sprite
+  const labelSprite = createTextSprite(planetData.name, {
+    fontsize: 28,
+    backgroundColor: { r: 255, g: 255, b: 255, a: 0.7 },
+  });
+  labelSprite.position.set(0, planetData.radius + 0.5, 0);
+  planet.add(labelSprite);
+  labelSprite.raycast = () => {};   // Ignore les clics sur le sprite et Eviter le crash du clic
+
 
   // Inclinaison
   if (planetData.inclination) {
@@ -106,22 +117,26 @@ window.addEventListener("mousemove", (event) => {
 window.addEventListener("click", () => {
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(clickablePlanets, true);
-  console.log(intersects);
-  intersects.forEach((intersect) => {
-    if (intersect.object.click) {
-      intersect.object.click();
-      if (intersects.length > 0) {
-        // En gros si il y a une planete
-        selectedPlanet = intersect.object;
-        isFollowingPlanet = true; // La caméra suit une planète
-      } else if (isFollowingPlanet) {
-        isFollowingPlanet = false; // La caméra ne suit plus la planète
-        selectedPlanet = null; // Réinitialiser la planète sélectionnée
-      }
-    }
-  });
+  if (intersects.length > 0) {
+    const intersect = intersects[0];
+    selectedPlanet = intersect.object;
+    isFollowingPlanet = true;
+
+    // Fixe directement la cible de controls sur la planète
+    controls.target.copy(selectedPlanet.position);
+
+    // NE TOUCHE PAS à camera.position ici !
+  }
 });
 
+//Stop le suivi de caméra du LookAt mais reste sur la caméra planete
+controls.addEventListener("start", () => {
+  if (isFollowingPlanet && selectedPlanet) {
+    isFollowingPlanet = false; // La caméra ne suit plus la planète
+    controls.target.copy(selectedPlanet.position); // Mettre à jour la cible de la caméra
+    console.log("Suivi de caméra desactivé");
+  }
+});
 
 sun.tick = () => {
   //   sun.rotation.y += sun.rotationSpeed;
@@ -141,19 +156,18 @@ function animate() {
   //   scene.traverse((obj) => {
   //     if (obj.tick) obj.tick();
   //   });
-
-  if (isFollowingPlanet && selectedPlanet) { //Si la caméra suit une planète cliquée
+  if (isFollowingPlanet && selectedPlanet) {
     const planetRadius = selectedPlanet.geometry.parameters.radius;
-    const offset = new Vector3(
-      planetRadius * 0,
-      planetRadius * 3,
-      planetRadius * 2
-    );
-  
-    const newCameraPosition = new Vector3().copy(selectedPlanet.position).add(offset);
-    camera.position.lerp(newCameraPosition, 0.01); // Smooth follow
-    camera.lookAt(selectedPlanet.position);
+    const offset = new Vector3(0, planetRadius * 3, planetRadius * 2);
+    const desiredPosition = new Vector3()
+      .copy(selectedPlanet.position)
+      .add(offset);
+
+    camera.position.lerp(desiredPosition, 0.05);
+    controls.target.lerp(selectedPlanet.position, 0.05);
   }
+
+  controls.update(); // Update **après** avoir changé pos & target !
 
   renderer.render(scene, camera);
   requestAnimationFrame(animate);

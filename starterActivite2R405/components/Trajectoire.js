@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineLoop, Vector3 } from 'three';
+import { BufferGeometry, LineBasicMaterial, LineLoop, Vector3 } from 'three';
 
 export default function createOrbitLine(radius, inclination = 0, color = 0xffffff) {
   const segments = 64;
@@ -14,7 +14,7 @@ export default function createOrbitLine(radius, inclination = 0, color = 0xfffff
   const orbitLine = new LineLoop(geometry, material);
 
   // Placer dans le plan XZ (horizontal)
-  orbitLine.rotation.x = Math.PI / 2;
+  orbitLine.rotation.x = Math.PI ;
 
   // Appliquer inclinaison
   orbitLine.rotation.z = inclination;

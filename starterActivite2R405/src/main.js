@@ -1,8 +1,8 @@
-import init from "./systems/init";
-import Sphere from "./components/PlanetSphere";
-import Sun from "./components/SunSphere";
-import OrbitLine from "./components/Trajectoire";
-import { createTextSprite } from "./components/Sprite";
+import init from "../systems/init.js";
+import Sphere from "../components/PlanetSphere.js";
+import Sun from "../components/SunSphere.js";
+import OrbitLine from "../components/Trajectoire.js";
+import { createTextSprite } from "../components/Sprite.js";
 import {
   Object3D,
   PointLight,
@@ -12,8 +12,10 @@ import {
   Vector2,
   Vector3,
 } from "three";
-import Vide from "./assets/images/GalaxyDark.jpg";
-import solarSystem from "../solar_system.json";
+import Vide from "../assets/images/GalaxyDark.jpg";
+import solarSystem from "../../solar_system.json";
+import { showPlanetPanel } from "./interface.js";
+import { systemsAnimate } from "./SystemeAnimation.js";
 
 const [camera, renderer, scene, controls] = init();
 
@@ -21,9 +23,9 @@ const raycaster = new Raycaster();
 const mouse = new Vector2();
 let selectedPlanet = null; // Variable pour savoir si une planète est sélectionnée, Let car changement possible
 let isFollowingPlanet = false; // Variable pour savoir si la caméra suit une planète
-const initialCameraPosition = new Vector3(0, 30, 50); // Position initiale de la caméra
-const initialCameraTarget = new Vector3(0, 0, 0); // Cible initiale de la caméra
-
+let initialCameraPosition = new Vector3();
+let targetCameraPosition = new Vector3();
+let animation = 0;
 const clickablePlanets = [];
 
 // Fond
@@ -43,22 +45,33 @@ sun.add(sunLight);
 sun.add(ambientLight);
 scene.add(sun);
 
+
+
+
+
+
 // Planètes
 const orbitCenters = [];
 
 solarSystem.planets.forEach((planetData) => {
   // Ligne de trajectoire
-  const orbitLine = new OrbitLine(planetData.distance, planetData.inclination);
-  scene.add(orbitLine);
+  // const orbitLine = new OrbitLine(planetData.distance, planetData.inclination);
+  // scene.add(orbitLine);
 
   const planetOrbit = new Object3D();
   sun.add(planetOrbit);
   orbitCenters.push({ orbit: planetOrbit, speed: planetData.orbitSpeed });
 
+
+  // Info du JSON
   const planet = new Sphere(planetData.radius, planetData.texture);
-  planet.position.x = planetData.distance;
+  const angle = planetData.initialAngle || 0;
+  planet.position.x = Math.cos(angle) * planetData.distance;
+  planet.position.z = Math.sin(angle) * planetData.distance;
   planet.rotationSpeed = planetData.selfRotationSpeed || 0.01;
-  planet.name = planetData.name || "Unknown";
+  planet.name = planetData.name;
+  planet.type = planetData.type;
+  planet.description = planetData.description;
 
   //Sprite
   const labelSprite = createTextSprite(planetData.name, {
@@ -67,7 +80,7 @@ solarSystem.planets.forEach((planetData) => {
   });
   labelSprite.position.set(0, planetData.radius + 0.5, 0);
   planet.add(labelSprite);
-  labelSprite.raycast = () => {};   // Ignore les clics sur le sprite et Eviter le crash du clic
+  labelSprite.raycast = () => { };   // Ignore les clics sur le sprite et Eviter le crash du clic
 
 
   // Inclinaison
@@ -80,6 +93,7 @@ solarSystem.planets.forEach((planetData) => {
   // La function click sur planete
   planet.click = () => {
     console.log(planet.name);
+    showPlanetPanel(planet); // Afficher les informations de la planète
   };
 
   planet.tick = () => {
@@ -87,6 +101,13 @@ solarSystem.planets.forEach((planetData) => {
   };
 
   planetOrbit.add(planet);
+
+
+
+
+
+
+
 
   // === Satellites ===
   if (planetData.moons) {
@@ -96,7 +117,9 @@ solarSystem.planets.forEach((planetData) => {
       orbitCenters.push({ orbit: moonOrbit, speed: moonData.orbitSpeed });
 
       const moon = new Sphere(moonData.radius, moonData.texture);
-      moon.position.x = moonData.distance;
+      const angle = moonData.initialAngle || 0;
+      moon.position.x = Math.cos(angle) * moonData.distance;
+      moon.position.z = Math.sin(angle) * moonData.distance;
       moon.rotationSpeed = moonData.selfRotationSpeed || 0.01;
 
       moon.tick = () => {
@@ -107,6 +130,13 @@ solarSystem.planets.forEach((planetData) => {
     });
   }
 });
+
+
+
+
+
+
+
 
 // === Gestion des interactions souris ===
 window.addEventListener("mousemove", (event) => {
@@ -122,10 +152,17 @@ window.addEventListener("click", () => {
     selectedPlanet = intersect.object;
     isFollowingPlanet = true;
 
-    // Fixe directement la cible de controls sur la planète
-    controls.target.copy(selectedPlanet.position);
+    // Afficher le panneau d'information de la planète
+    if (typeof selectedPlanet.click === "function") {
+      selectedPlanet.click();
+    }
 
-    // NE TOUCHE PAS à camera.position ici !
+
+    // Animation de la caméra + Reset de l'animation pour renouveler la position
+    initialCameraPosition.copy(camera.position);
+    targetCameraPosition.copy(controls.target);
+    animation = 0;
+
   }
 });
 
@@ -158,17 +195,26 @@ function animate() {
   //   });
   if (isFollowingPlanet && selectedPlanet) {
     const planetRadius = selectedPlanet.geometry.parameters.radius;
-    const offset = new Vector3(0, planetRadius * 3, planetRadius * 2);
+    const offset = new Vector3(-3, planetRadius * 2, planetRadius * -4); //Vector3(x, y, z) pour la position de la caméra x positif = droite, y positif = haut, z positif = avant ; planete radius pour la distance
     const desiredPosition = new Vector3()
       .copy(selectedPlanet.position)
       .add(offset);
 
-    camera.position.lerp(desiredPosition, 0.05);
-    controls.target.lerp(selectedPlanet.position, 0.05);
+    animation += 0.02;
+    if (animation > 1) animation = 1;
+
+    // Interpolation entre position de départ et position finale
+    camera.position.lerpVectors(initialCameraPosition, desiredPosition, animation); // lerpVectors(Départ, Arrivé, Interpolation)
+    controls.target.lerpVectors(targetCameraPosition, selectedPlanet.position, animation);
+
+    if (animation === 1) {
+      isFollowingPlanet = false; // Arrêter le suivi de la planète
+      selectedPlanet = null; // Réinitialiser la sélection
+      animation = 0; // Réinitialiser l'animation
+    }
   }
 
-  controls.update(); // Update **après** avoir changé pos & target !
-
+  controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }

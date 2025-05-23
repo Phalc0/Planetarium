@@ -9,174 +9,210 @@
   "planets": [
     {
       "name": "Mercury",
+      "type": "terrestrial",
       "radius": 0.3,
       "distance": 4,
       "texture": "./assets/images/mercure.jpg",
       "orbitSpeed": 0.035,
-      "selfRotationSpeed": 0.005
+      "selfRotationSpeed": 0.005,
+      "initialAngle": 0.1,
+      "description": "The smallest planet in our solar system and nearest to the Sun, Mercury is only slightly larger than Earth's Moon. Mercury's surface temperatures are both extremely hot and cold..."
     },
     {
       "name": "Venus",
+      "type": "terrestrial",
       "radius": 0.6,
       "distance": 6,
       "texture": "./assets/images/venus.jpg",
       "orbitSpeed": 0.028,
-      "selfRotationSpeed": 0.003
+      "selfRotationSpeed": 0.003,
+      "initialAngle": 0.5,
+      "description": "Similar in size and structure to Earth, Venus has been called Earth's twin..."
     },
     {
       "name": "Earth",
+      "type": "terrestrial",
       "radius": 0.7,
       "distance": 8,
       "texture": "./assets/images/terre.jpg",
       "orbitSpeed": 0.02,
       "selfRotationSpeed": 0.02,
       "inclination": 0.07,
+      "initialAngle": 0.3,
+      "description": "Earth—our home planet—is the only place we know of so far that’s inhabited by living things...",
       "moons": [
         {
           "name": "Moon",
-          "radius": 0.2,
-          "distance": 1.2,
+          "radius": 0.07,
+          "distance": 1,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.03,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 1.2
         }
       ]
     },
     {
       "name": "Mars",
+      "type": "terrestrial",
       "radius": 0.4,
       "distance": 10,
       "texture": "./assets/images/mars.jpg",
       "orbitSpeed": 0.015,
       "selfRotationSpeed": 0.018,
+      "initialAngle": 0.2618,
+      "description": "The fourth planet from the Sun, Mars is a dusty, cold, desert world with a very thin atmosphere. Mars was named by the ancient Romans for their god of war...",
       "moons": [
         {
           "name": "Phobos",
-          "radius": 0.05,
-          "distance": 0.8,
+          "radius": 0.02,
+          "distance": 0.45,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.04,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 0.9
         },
         {
           "name": "Deimos",
-          "radius": 0.03,
-          "distance": 1.0,
+          "radius": 0.015,
+          "distance": 0.6,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.035,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 2.1
         }
       ]
     },
     {
       "name": "Jupiter",
+      "type": "gas giant",
       "radius": 1.4,
       "distance": 14,
       "texture": "./assets/images/jupiter.jpg",
       "orbitSpeed": 0.008,
       "selfRotationSpeed": 0.03,
+      "initialAngle": 2.0944,
+      "description": "Jupiter is the fifth planet from our Sun and is, by far, the largest planet in the solar system...",
       "moons": [
         {
           "name": "Io",
-          "radius": 0.2,
-          "distance": 2.0,
+          "radius": 0.07,
+          "distance": 1.2,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.02,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 0.2
         },
         {
           "name": "Europa",
-          "radius": 0.18,
-          "distance": 2.5,
+          "radius": 0.06,
+          "distance": 1.5,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.018,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 1.3
         },
         {
           "name": "Ganymede",
-          "radius": 0.25,
-          "distance": 3.2,
+          "radius": 0.08,
+          "distance": 1.95,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.015,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 2.4
         },
         {
           "name": "Callisto",
-          "radius": 0.24,
-          "distance": 4.0,
+          "radius": 0.08,
+          "distance": 2.4,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.012,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 3.5
         }
       ]
     },
     {
       "name": "Saturn",
+      "type": "gas giant",
       "radius": 1.2,
       "distance": 18,
       "texture": "./assets/images/saturne.jpg",
       "orbitSpeed": 0.006,
       "selfRotationSpeed": 0.025,
+      "initialAngle": 3.1416,
+      "description": "Saturn is the sixth planet from the Sun and the second largest planet in our solar system...",
       "moons": [
         {
           "name": "Titan",
-          "radius": 0.22,
-          "distance": 2.8,
+          "radius": 0.08,
+          "distance": 1.5,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.014,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 0.7
         },
         {
           "name": "Enceladus",
-          "radius": 0.1,
-          "distance": 2.0,
+          "radius": 0.04,
+          "distance": 1.05,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.018,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 2.2
         }
       ]
     },
     {
       "name": "Uranus",
+      "type": "ice giant",
       "radius": 1.0,
       "distance": 22,
       "texture": "./assets/images/uranus.jpg",
       "orbitSpeed": 0.004,
       "selfRotationSpeed": 0.02,
+      "initialAngle": 4.1888,
+      "description": "The seventh planet from the Sun with the third largest diameter in our solar system, Uranus is very cold and windy...",
       "moons": [
         {
           "name": "Titania",
-          "radius": 0.15,
-          "distance": 2.5,
+          "radius": 0.05,
+          "distance": 1.5,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.01,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 0.5
         },
         {
           "name": "Oberon",
-          "radius": 0.14,
-          "distance": 3.0,
+          "radius": 0.05,
+          "distance": 1.8,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.009,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 1.5
         }
       ]
     },
     {
       "name": "Neptune",
+      "type": "ice giant",
       "radius": 1.0,
       "distance": 26,
       "texture": "./assets/images/neptune.jpg",
       "orbitSpeed": 0.003,
       "selfRotationSpeed": 0.018,
+      "initialAngle": 5.236,
+      "description": "Dark, cold and whipped by supersonic winds, ice giant Neptune is the eighth and most distant planet in our solar system...",
       "moons": [
         {
           "name": "Triton",
-          "radius": 0.18,
-          "distance": 2.6,
+          "radius": 0.06,
+          "distance": 1.5,
           "texture": "./assets/images/lune.jpg",
           "orbitSpeed": 0.008,
-          "selfRotationSpeed": 0.01
+          "selfRotationSpeed": 0.01,
+          "initialAngle": 0.8
         }
       ]
     }

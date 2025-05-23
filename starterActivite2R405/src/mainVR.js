@@ -1,9 +1,9 @@
-import init from './systems/init';
-import Sphere from './components/PlanetSphere';
-import Sun from './components/SunSphere';
+import init from '../systems/init';
+import Sphere from '../components/PlanetSphere';
+import Sun from '../components/SunSphere';
 import { Object3D, PointLight, AmbientLight, BackSide } from 'three';
-import Vide from './assets/images/GalaxyDark.jpg';
-import solarSystem from '../solar_system.json';
+import Vide from '../assets/images/GalaxyDark.jpg';
+import solarSystem from '../../solar_system.json';
 
 import { VRButton } from 'three/addons/webxr/VRButton.js'; // VR
 

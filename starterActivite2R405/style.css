@@ -2,3 +2,54 @@
     margin: 0;
     padding: 0;
 }
+
+.planet-panel {
+    position: absolute;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 300px;
+    /* height: 96vh; */
+    background: linear-gradient(to bottom, rgba(3, 3, 3, 0.671), rgba(43, 43, 43, 0.9));
+    color: white;
+    overflow-y: auto;
+    font-family: sans-serif;
+    z-index: 10;
+    display: none;
+    margin: 10px;
+    padding: 10px;
+    border-bottom: 10px;
+    border-radius: 10px;
+  }
+.planet-panel h2 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+.planet-panel h3 {
+    font-size: 20px;
+    color: #8f8f8f;
+    margin-bottom: 20px;
+}
+.planet-panel p{
+    font-size: 15px;
+    color: #f7f7f7;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.planet-panel p:first-of-type{
+    margin-bottom: 40px;
+}
+
+#border{
+    border-bottom: #b4b4b438 1px solid;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.system-solaire-animations{
+    position: absolute;
+    /* en bas au centre */
+    bottom: 0;
+    left: 50%;
+    margin: 10px;
+}

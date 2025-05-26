@@ -1,5 +1,6 @@
 import init from "../systems/init.js";
 import Sphere from "../components/PlanetSphere.js";
+import Ring from "../components/Ring.js";
 import Sun from "../components/SunSphere.js";
 import OrbitLine from "../components/Trajectoire.js";
 import { createTextSprite } from "../components/Sprite.js";
@@ -15,6 +16,7 @@ import {
 import Vide from "../assets/images/GalaxyDark.jpg";
 import solarSystem from "../../solar_system.json";
 import { showPlanetPanel } from "./interface.js";
+import SaturnRing from "../assets/images/saturnRingPolaire.png";
 
 const [camera, renderer, scene, controls] = init();
 
@@ -43,7 +45,7 @@ sun.rotationSpeed = sunData.rotationSpeed || 0.001;
 
 const sunLight = new PointLight(0xffffff, 2, 100);
 sunLight.position.set(0, 0, 0);
-const ambientLight = new AmbientLight(0xffffff, 0.1);
+const ambientLight = new AmbientLight(0xffffff, 0.17);
 
 sun.add(sunLight);
 sun.add(ambientLight);
@@ -83,6 +85,22 @@ solarSystem.planets.forEach((planetData) => {
   planet.name = planetData.name;
   planet.type = planetData.type;
   planet.description = planetData.description;
+
+
+
+  // Anneau Saturne 
+  if(planetData.name === "Saturn") {
+    const RingPolaire = new Ring({
+      innerRadius : planetData.radius * 1.5, 
+      outerRadius : planetData.radius * 2.5,
+      texture : SaturnRing,
+    });
+
+    RingPolaire.rotation.x = Math.PI / 2;
+    planet.add(RingPolaire);
+  }
+
+
 
   //Sprite
   const labelSprite = createTextSprite(planetData.name, {
@@ -233,7 +251,7 @@ function animate() {
 
     const offset = new Vector3(-3, planetRadius * 2, planetRadius * -4); //Vector3(x, y, z) pour la position de la caméra x positif = droite, y positif = haut, z positif = avant ; planete radius pour la distance
     const desiredPosition = new Vector3() //definit la position voulu  avec worldPos
-      .copy(worldPos)  
+      .copy(worldPos)
       .add(offset);
 
     animation += 0.02;

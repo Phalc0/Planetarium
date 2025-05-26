@@ -15,18 +15,22 @@ import {
 import Vide from "../assets/images/GalaxyDark.jpg";
 import solarSystem from "../../solar_system.json";
 import { showPlanetPanel } from "./interface.js";
-import { systemsAnimate } from "./SystemeAnimation.js";
 
 const [camera, renderer, scene, controls] = init();
 
 const raycaster = new Raycaster();
 const mouse = new Vector2();
+
+
 let selectedPlanet = null; // Variable pour savoir si une planète est sélectionnée, Let car changement possible
 let isFollowingPlanet = false; // Variable pour savoir si la caméra suit une planète
 let initialCameraPosition = new Vector3();
 let targetCameraPosition = new Vector3();
-let animation = 0;
+let animation = 0; // pour le zoom
 const clickablePlanets = [];
+
+
+let isAnimate = false; //pour le bouton 
 
 // Fond
 const background = new Sphere(500, Vide, BackSide);
@@ -59,8 +63,15 @@ solarSystem.planets.forEach((planetData) => {
   // scene.add(orbitLine);
 
   const planetOrbit = new Object3D();
+  planetOrbit.userData.initialAngle = planetData.initialAngle || 0;
+  planetOrbit.userData.distance = planetData.distance;
   sun.add(planetOrbit);
-  orbitCenters.push({ orbit: planetOrbit, speed: planetData.orbitSpeed });
+  orbitCenters.push({
+    orbit: planetOrbit,
+    speed: planetData.orbitSpeed,
+    initialAngle: planetData.initialAngle || 0,
+    distance: planetData.distance
+  });
 
 
   // Info du JSON
@@ -97,7 +108,7 @@ solarSystem.planets.forEach((planetData) => {
   };
 
   planet.tick = () => {
-    // planet.rotation.y += planet.rotationSpeed;
+    planet.rotation.y += planet.rotationSpeed;
   };
 
   planetOrbit.add(planet);
@@ -147,7 +158,7 @@ window.addEventListener("mousemove", (event) => {
 window.addEventListener("click", () => {
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(clickablePlanets, true);
-  if (intersects.length > 0) {
+  if (intersects.length > 0) { // En gros si ya une planete 
     const intersect = intersects[0];
     selectedPlanet = intersect.object;
     isFollowingPlanet = true;
@@ -160,7 +171,9 @@ window.addEventListener("click", () => {
 
     // Animation de la caméra + Reset de l'animation pour renouveler la position
     initialCameraPosition.copy(camera.position);
-    targetCameraPosition.copy(controls.target);
+
+
+    targetCameraPosition.copy(controls.target); //controls.target = endroit pointé par la caméra
     animation = 0;
 
   }
@@ -168,7 +181,7 @@ window.addEventListener("click", () => {
 
 //Stop le suivi de caméra du LookAt mais reste sur la caméra planete
 controls.addEventListener("start", () => {
-  if (isFollowingPlanet && selectedPlanet) {
+  if (isFollowingPlanet && selectedPlanet) { // Si la camera suit une planete (selectionnée)
     isFollowingPlanet = false; // La caméra ne suit plus la planète
     controls.target.copy(selectedPlanet.position); // Mettre à jour la cible de la caméra
     console.log("Suivi de caméra desactivé");
@@ -179,33 +192,56 @@ sun.tick = () => {
   //   sun.rotation.y += sun.rotationSpeed;
 };
 
+
+//Bouton animation
+
+const button = document.createElement("button");
+button.innerText = "Lancer l'animation";
+button.className = "system-solaire-animations";
+document.body.appendChild(button);
+button.addEventListener("click", () => { //Inversion 
+  isAnimate = !isAnimate;
+  button.textContent = isAnimate ? 'Stop Animation' : 'Start Animation';
+})
+
+
 function animate() {
   // Rotation du soleil
   sun.tick();
   controls.update();
 
-  // Rotation des orbites (orbite autour du soleil ou des planètes)
-  //   orbitCenters.forEach(({ orbit, speed }) => {
-  //     orbit.rotation.y += speed;
-  //   });
-
   // Camera qui suit la rotation (actuellement du soleil)
   //   scene.traverse((obj) => {
   //     if (obj.tick) obj.tick();
   //   });
-  if (isFollowingPlanet && selectedPlanet) {
+
+  if (isAnimate) { // Si True lance l'animation 
+    orbitCenters.forEach(({ orbit, speed }) => {
+      orbit.rotation.y += speed;
+    });
+
+  };
+
+
+  // Zoom sur planete
+  if (isFollowingPlanet && selectedPlanet) { // Si la camera suit une planete (selectionnée) 
     const planetRadius = selectedPlanet.geometry.parameters.radius;
+    const worldPos = new Vector3();
+    selectedPlanet.getWorldPosition(worldPos); // Contient la position mondiale de la planete selectionnée
+    // console.log("Position monde de la planète :", worldPos);
+
+
     const offset = new Vector3(-3, planetRadius * 2, planetRadius * -4); //Vector3(x, y, z) pour la position de la caméra x positif = droite, y positif = haut, z positif = avant ; planete radius pour la distance
-    const desiredPosition = new Vector3()
-      .copy(selectedPlanet.position)
+    const desiredPosition = new Vector3() //definit la position voulu  avec worldPos
+      .copy(worldPos)  
       .add(offset);
 
     animation += 0.02;
-    if (animation > 1) animation = 1;
+    if (animation > 1) animation = 1; // Le Stop de l'animation 
 
     // Interpolation entre position de départ et position finale
     camera.position.lerpVectors(initialCameraPosition, desiredPosition, animation); // lerpVectors(Départ, Arrivé, Interpolation)
-    controls.target.lerpVectors(targetCameraPosition, selectedPlanet.position, animation);
+    controls.target.lerpVectors(targetCameraPosition, worldPos, animation);
 
     if (animation === 1) {
       isFollowingPlanet = false; // Arrêter le suivi de la planète

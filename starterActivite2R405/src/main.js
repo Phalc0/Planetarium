@@ -16,7 +16,7 @@ import {
 import Vide from "../assets/images/GalaxyDark.jpg";
 import solarSystem from "../../solar_system.json";
 import { showPlanetPanel } from "./interface.js";
-import SaturnRing from "../assets/images/saturnRingPolaire.png";
+import SaturnRing from "../assets/images/SaturneRingAlpha.png";
 
 const [camera, renderer, scene, controls] = init();
 
@@ -54,7 +54,7 @@ scene.add(sun);
 
 
 
-
+//Il faut que j'attache la caméra() a orbitCenters pour que la caméra suive la planète sélectionnée
 
 // Planètes
 const orbitCenters = [];
@@ -98,6 +98,7 @@ solarSystem.planets.forEach((planetData) => {
 
     RingPolaire.rotation.x = Math.PI / 2;
     planet.add(RingPolaire);
+    RingPolaire.raycast = () => { }; // Ignore les clics sur l'anneau et Eviter le crash du clic
   }
 
 

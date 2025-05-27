@@ -50,7 +50,7 @@
     position: absolute;
     /* en bas au centre */
     bottom: 0;
-    left: 50%;
+    left: 45%;
     margin: 10px;
     padding: 12px 20px;
     font-size: 16px;
@@ -67,4 +67,25 @@
   .system-solaire-animations:hover {
     background-color: #333;
   }
-  
+
+  .system-solaire-reset-camera {
+    position: absolute;
+    /* en bas au centre */
+    bottom: 0;
+    left: 55%;
+    margin: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.system-solaire-reset-camera:hover {
+    background-color: #333;
+  }

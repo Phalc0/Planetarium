@@ -84,6 +84,10 @@ solarSystem.planets.forEach((planetData) => {
   planet.rotationSpeed = planetData.selfRotationSpeed || 0.01;
   planet.name = planetData.name;
   planet.type = planetData.type;
+  planet.UA = planetData.UA;
+  planet.RRadius = planetData.RealRadius;
+  planet.Turn = planetData.Turn;
+  planet.RotationSpeed = planetData.RotationSpeed;
   planet.description = planetData.description;
 
 
@@ -174,30 +178,29 @@ window.addEventListener("mousemove", (event) => {
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 });
 
-window.addEventListener("click", () => {
+
+// Fonction pour gérer le clic sur une planète et empecher le clic lors de l'animation
+function onClickPlanet(event) {
+  if (isAnimate) return; // Ne rien faire si l'animation tourne
+
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(clickablePlanets, true);
-  if (intersects.length > 0) { // En gros si ya une planete 
+  if (intersects.length > 0) {
     const intersect = intersects[0];
     selectedPlanet = intersect.object;
     isFollowingPlanet = true;
 
-    // Afficher le panneau d'information de la planète
     if (typeof selectedPlanet.click === "function") {
       selectedPlanet.click();
     }
 
-
-    // Animation de la caméra + Reset de l'animation pour renouveler la position
     initialCameraPosition.copy(camera.position);
-
-
-    targetCameraPosition.copy(controls.target); //controls.target = endroit pointé par la caméra
+    targetCameraPosition.copy(controls.target);
     animation = 0;
-
   }
-});
+}
 
+window.addEventListener("click", onClickPlanet);
 //Stop le suivi de caméra du LookAt mais reste sur la caméra planete
 controls.addEventListener("start", () => {
   if (isFollowingPlanet && selectedPlanet) { // Si la camera suit une planete (selectionnée)
@@ -223,6 +226,17 @@ button.addEventListener("click", () => { //Inversion
   button.textContent = isAnimate ? 'Stop Animation' : 'Start Animation';
 })
 
+// Bouton pour réinitialiser la caméra sur le soleil
+const resetButton = document.createElement("button");
+resetButton.innerText = "Retour sur Soleil"; // Texte du bouton
+resetButton.className = "system-solaire-reset-camera";
+document.body.appendChild(resetButton);
+resetButton.addEventListener("click", () => {
+  camera.position.set(0, 5, 8); // Position de la caméra par défaut
+  controls.target.set(0, 0, 0); // Cible de la caméra par défaut
+  isFollowingPlanet = false; // Arrêter le suivi de la planète
+  resetButton.textContent = 'Retour sur Soleil';
+});
 
 function animate() {
   // Rotation du soleil

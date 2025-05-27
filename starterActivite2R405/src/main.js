@@ -14,7 +14,7 @@ import {
   Vector3,
 } from "three";
 import Vide from "../assets/images/GalaxyDark.jpg";
-import solarSystem from "../../solar_system.json";
+import solarSystem from "../solar_system.json";
 import { showPlanetPanel } from "./interface.js";
 import SaturnRing from "../assets/images/SaturneRingAlpha.png";
 
